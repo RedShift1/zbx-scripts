@@ -78,16 +78,18 @@ class WBEM
     private $pass;
     private $secure;
     private $port;
-    private $timeout;
-    
-    public function __construct($host, $user, $pass, $secure = true, $port = null, $timeout = 15)
+    private $connectTimeout;
+    private $dataTimeout;
+
+    public function __construct($host, $user, $pass, $secure = true, $port = null, $connectTimeout = 7, $dataTimeout = 20)
     {
         $this->host     = $host;
         $this->user     = $user;
         $this->pass     = $pass;
         $this->secure   = $secure;
         $this->port     = $port;
-        $this->timeout  = $timeout;
+        $this->connectTimeout = $connectTimeout;
+        $this->dataTimeout = $dataTimeout;
     }
 
     private function authHeader()
@@ -153,7 +155,8 @@ class WBEM
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
+        curl_setopt($curl, CURLOPT_TIMEOUT, $this->dataTimeout);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
