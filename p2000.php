@@ -108,7 +108,7 @@ class P2000
 
     private function DoCURLRequest($Command, $verifyResponse = false)
     {
-        $url = "https://{$this->address}/{$Command}";
+        $url = "http://{$this->address}/{$Command}";
         $CURL = curl_init($url);
         curl_setopt($CURL, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($CURL, CURLOPT_SSL_VERIFYPEER, false);
