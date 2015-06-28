@@ -68,8 +68,8 @@ class P2000
                 {
                     $value = 0;
                 }
-                $tmp .= "- {$Entry["name"]}.";
-                $tmp .= "{$Attr["name"]}[{$Entry["oid"]}] " . $value . "\n";
+                $tmp .= "- \"{$Entry["name"]}.";
+                $tmp .= "{$Attr["name"]}[{$Entry["oid"]}]\" " . $value . "\n";
             }
         }
 
@@ -159,7 +159,7 @@ class P2000
             $Attrs["{#OID}"] = "{$Entry["oid"]}";
             foreach ($Entry->children() as $Attr)
             {
-                $Attrs[strtoupper("{#" . (string) $this->fixPropName($Attr["name"]) . "}")] = (string) $Attr;
+                $Attrs[strtoupper("{#" . (string) $this->fixPropName($Attr["name"]) . "}")] = trim($Attr);
             }
             $Entries[] = $Attrs;
         }
@@ -328,8 +328,20 @@ elseif (@$Options['m'] == 'zbxsender')
     elseif ($return == 2 || $return == 0)
     {
         $regex = '/info from server: "processed: (\d+); failed: (\d+); total: (\d+); seconds spent: (\d+\.\d+)"/';
-        preg_match($regex, $stdout, $matches);
-        echo "OK: [processed {$matches[1]}/{$matches[3]} in {$matches[4]}]\n";
+        $processed = 0;
+        $failed = 0;
+        $total = 0;
+        $secondsSpent = 0.0;
+        foreach (explode("\n", $stdout) as $line)
+        {
+            if (preg_match($regex, $line, $matches))
+            {
+                $processed += (int) $matches[1];
+                $total += (int) $matches[3];
+                $secondsSpent += (float) $matches[4];
+            }
+        }
+        echo "OK [{$processed}/{$total} processed in {$secondsSpent}]\n";
         /* echo $cmd . "\n";
           echo "stdout: {$stdout}, stderr: {$stderr}\n";
           echo "data: " . print_r($data, true); */
