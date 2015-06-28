@@ -306,7 +306,7 @@ elseif (@$Options['m'] == 'zbxsender')
         var_dump($data);
         exit;
     }
-    $cmd = "zabbix_sender -c /etc/zabbix/zabbix_sender.conf -s {$ZabbixHost} -i -";
+    $cmd = "zabbix_sender -z 127.0.0.1 -vv -s {$ZabbixHost} -i -";
 
     $descriptorspec = array(
         0 => array("pipe", "r"), // stdin is a pipe that the child will read from
