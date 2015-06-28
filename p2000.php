@@ -329,7 +329,7 @@ elseif (@$Options['m'] == 'zbxsender')
     {
         $regex = '/info from server: "processed: (\d+); failed: (\d+); total: (\d+); seconds spent: (\d+\.\d+)"/';
         preg_match($regex, $stdout, $matches);
-        echo "OK: " . date('r') . " [processed {$matches[1]}/{$matches[3]} in {$matches[4]}]\n";
+        echo "OK: [processed {$matches[1]}/{$matches[3]} in {$matches[4]}]\n";
         /* echo $cmd . "\n";
           echo "stdout: {$stdout}, stderr: {$stderr}\n";
           echo "data: " . print_r($data, true); */
